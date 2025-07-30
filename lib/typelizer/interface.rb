@@ -110,7 +110,20 @@ module Typelizer
     private
 
     def self_type_name
-      serializer.name.match(/(\w+::)?(\w+)(Serializer|Resource)/)[2]
+      # Handle different serializer naming conventions:
+      # - AMS/Alba/Panko: PostSerializer -> Post
+      # - jsonapi-serializable: SerializablePost -> Post
+      match = serializer.name.match(/(\w+::)?(\w+)(Serializer|Resource)/) ||
+        serializer.name.match(/(\w+::)?(Serializable)(\w+)/)
+
+      if match
+        # For SerializablePost pattern, return the third group (Post)
+        # For PostSerializer pattern, return the second group (Post)
+        (match[2] == "Serializable") ? match[3] : match[2]
+      else
+        # Fallback: use the class name as-is
+        serializer.name.split("::").last
+      end
     end
 
     def extract_typescript_types(type)

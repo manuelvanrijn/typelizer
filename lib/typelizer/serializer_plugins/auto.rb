@@ -15,6 +15,8 @@ module Typelizer
             AMS
           elsif defined?(::Panko::Serializer) && serializer.ancestors.include?(::Panko::Serializer)
             Panko
+          elsif defined?(::JSONAPI::Serializable::Resource) && serializer.ancestors.include?(::JSONAPI::Serializable::Resource)
+            Jsonapi
           else
             raise "Can't guess serializer plugin for #{serializer}. " \
                     "Please specify it with `config.serializer_plugin`."

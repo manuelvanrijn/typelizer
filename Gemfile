@@ -20,6 +20,9 @@ gem "alba"
 
 gem "panko_serializer"
 
+gem "jsonapi-serializable"
+gem "jsonapi-rails"
+
 # Rails app
 gem "rails", "~> 7.1.3"
 gem "sqlite3", "~> 1.4"

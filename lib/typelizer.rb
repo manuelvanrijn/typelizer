@@ -15,6 +15,7 @@ require_relative "typelizer/serializer_plugins/oj_serializers"
 require_relative "typelizer/serializer_plugins/alba"
 require_relative "typelizer/serializer_plugins/ams"
 require_relative "typelizer/serializer_plugins/panko"
+require_relative "typelizer/serializer_plugins/jsonapi"
 
 require_relative "typelizer/model_plugins/active_record"
 require_relative "typelizer/model_plugins/poro"

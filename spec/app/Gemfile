@@ -10,6 +10,8 @@ gem "oj_serializers"
 gem "alba"
 gem "active_model_serializers"
 gem "panko_serializer"
+gem "jsonapi-serializable"
+gem "jsonapi-rails"
 
 gem "typelizer", path: "../.."
 

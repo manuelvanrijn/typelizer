@@ -29,7 +29,7 @@ Typelizer is a Ruby gem that automatically generates TypeScript interfaces from 
 ## Features
 
 - Automatic TypeScript interface generation
-- Support for multiple serializer libraries (`Alba`, `ActiveModel::Serializer`, `Oj::Serializer`, `Panko::Serializer`)
+- Support for multiple serializer libraries (`Alba`, `ActiveModel::Serializer`, `Oj::Serializer`, `Panko::Serializer`, `JSONAPI::Serializable::Resource`)
 - File watching and automatic regeneration in development
 
 ## Installation
@@ -71,6 +71,23 @@ end
 ```
 
 Typelizer will automatically generate TypeScript interfaces based on your serializer definitions using information from your models.
+
+#### JSON:API Serializers
+
+For JSON:API serializers using `jsonapi-serializable`, use the `Serializable` prefix naming convention:
+
+```ruby
+class SerializablePost < JSONAPI::Serializable::Resource
+  include Typelizer::DSL
+
+  type 'posts'
+  attributes :id, :title, :body
+
+  has_one :author, serializer: SerializableUser
+end
+```
+
+JSON:API serializers generate interfaces with the standard JSON:API structure including `data` and optional `meta` fields.
 
 ### Manual Typing
 

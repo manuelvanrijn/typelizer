@@ -44,7 +44,17 @@ module Typelizer
       files ||= Typelizer.dirs.flat_map { |dir| Dir["#{dir}/**/*.rb"] }
       files.each do |file|
         trace = TracePoint.new(:call) do |tp|
-          next unless tp.self.is_a?(Class) && tp.self.respond_to?(:typelizer_interface) && tp.self.typelizer_interface.is_a?(Interface)
+          # Skip OptionMerger objects from Rails' with_options blocks
+          # Use class name check to avoid calling methods on OptionMerger
+          next if tp.self.class.name == 'ActiveSupport::OptionMerger'
+
+          # Safely check if it's a Class and has typelizer_interface
+          begin
+            next unless tp.self.is_a?(Class) && tp.self.respond_to?(:typelizer_interface) && tp.self.typelizer_interface.is_a?(Interface)
+          rescue ArgumentError
+            # Skip if we get argument errors (likely from OptionMerger method_missing)
+            next
+          end
 
           serializer_plugin = tp.self.typelizer_interface.serializer_plugin
 
